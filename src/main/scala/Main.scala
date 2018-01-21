@@ -82,7 +82,7 @@ object Main extends JFXApp {
     vBox
   }
 
-  readFile()
+  //readFile()
   // To split string by commas not touching commas inside double quotes
   val outQuotesRegex = ",(?=(?:[^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)"
 
@@ -102,5 +102,7 @@ object Main extends JFXApp {
     }
     bufferedSource.close
   }
+
+  new PollParser().parseDataFile(new File(getClass.getResource("/june2017").getPath))
 
 }
