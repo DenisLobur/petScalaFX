@@ -30,6 +30,6 @@ object Main extends JFXApp {
 //  }
 
   val presenter = new Presenter
-  val view = DumbView
+  val view = PollView
 
 }

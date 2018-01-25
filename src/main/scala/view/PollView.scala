@@ -1,6 +1,9 @@
 package view
 
+
 import presenter.Presenter
+import util.PollPeriod
+import util.PollPeriod._
 
 import scalafx.Includes._
 import scalafx.application
@@ -9,7 +12,15 @@ import scalafx.scene.control.{ComboBox, Label, Slider}
 import scalafx.scene.layout.{BorderPane, HBox, VBox}
 
 object PollView {
-  val presenter = new Presenter
+  private val presenter = new Presenter
+  private val pollPeriods: Seq[String] = Seq(
+    December2011.show, May2011.show,
+    December2012.show, May2012.show,
+    December2013.show, May2013.show,
+    December2014.show, May2014.show,
+    December2015.show, May2015.show,
+    December2016.show, May2016.show,
+    December2017.show)
 
   Main.stage = new application.JFXApp.PrimaryStage {
     title = "salaries"
@@ -17,8 +28,8 @@ object PollView {
 
       val text = new Label
       text.text = "Developers salaries - "
-      val comboBox = new ComboBox[String](Seq[String]("2011", "2012", "2013"))
-      comboBox.value = "2011"
+      val comboBox = new ComboBox[String](pollPeriods)
+      comboBox.value = pollPeriods(0)
       val horizontalBox = new HBox()
       horizontalBox.children ++= List(text, comboBox)
 
@@ -82,4 +93,6 @@ object PollView {
 
     vBox
   }
+
+
 }
