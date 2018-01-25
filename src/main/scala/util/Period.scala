@@ -68,14 +68,8 @@ object PollPeriod {
     val show = "May 2016"
   }
 
-  case object December2017 extends PollPeriod {
-    val name = "2017december"
-    val show = "December 2017"
-  }
-
   case object May2017 extends PollPeriod {
     val name = "2017may"
     val show = "May 2017"
   }
-
 }

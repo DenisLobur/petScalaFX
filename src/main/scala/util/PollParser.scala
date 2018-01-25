@@ -11,13 +11,19 @@ object PollParser {
     for (line <- bufferedSource.getLines.drop(1)) {
       val cols = line.split(",(?=(?:[^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)")
       val list = cols.map(entry => entry.replaceAll("\"", ""))
-      pollData ++= List(Poll(list(0), list(1), list(2).toDouble, list(3).toInt, list(4), list(7)))
+      val id = list(0)
+      val city = list(1)
+      val salary = list(2).toInt
+      val position = list(3)
+      val experience = list(4).toDouble
+      val language = list(5)
+      pollData ++= List(Poll(id, city, salary, position, experience, language))
     }
-    val stop = System.currentTimeMillis()
-    println(stop - start)
     bufferedSource.close
 
-    println(pollData)
+    //println(pollData)
+    val stop = System.currentTimeMillis()
+    println(stop - start)
     pollData
   }
 }

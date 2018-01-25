@@ -21,7 +21,7 @@ object PollView {
     December2014.show, May2014.show,
     December2015.show, May2015.show,
     December2016.show, May2016.show,
-    December2017.show)
+    May2017.show)
 
   Main.stage = new application.JFXApp.PrimaryStage {
     title = "salaries"
