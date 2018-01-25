@@ -1,16 +1,17 @@
-import java.io.File
+package view
+
+import presenter.Presenter
 
 import scalafx.Includes._
 import scalafx.application
-import scalafx.application.JFXApp
-import scalafx.geometry.Orientation
 import scalafx.scene.Scene
-import scalafx.scene.control._
-import scalafx.scene.layout.{BorderPane, HBox, Pane, VBox}
+import scalafx.scene.control.{ComboBox, Label, Slider}
+import scalafx.scene.layout.{BorderPane, HBox, VBox}
 
+object PollView {
+  val presenter = new Presenter
 
-object Main extends JFXApp {
-  stage = new application.JFXApp.PrimaryStage {
+  Main.stage = new application.JFXApp.PrimaryStage {
     title = "salaries"
     scene = new Scene(800, 600) {
 
@@ -81,28 +82,4 @@ object Main extends JFXApp {
 
     vBox
   }
-
-  //readFile()
-  // To split string by commas not touching commas inside double quotes
-  val outQuotesRegex = ",(?=(?:[^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)"
-
-  private def readFile(): Unit = {
-//    val resourcesPath = getClass.getResource("/data")
-    val bufferedSource = io.Source.fromResource("june2017")
-//    val folder = new File(resourcesPath.getPath)
-//    if (folder.exists && folder.isDirectory)
-//      folder.listFiles
-//        .toIterator
-//          .filter(_.isFile)
-//        .foreach(file => println(file.getName))
-    for (line <- bufferedSource.getLines) {
-      val cols = line.split(",(?=(?:[^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)")
-      cols.foreach(entry => println(entry))
-      //println(s"${cols(0)}|${cols(1)}|${cols(2)}|${cols(3)}")
-    }
-    bufferedSource.close
-  }
-
-  new PollParser().parseDataFile(new File(getClass.getResource("/june2017").getPath))
-
 }
