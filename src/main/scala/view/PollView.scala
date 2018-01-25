@@ -7,6 +7,7 @@ import util.PollPeriod._
 
 import scalafx.Includes._
 import scalafx.application
+import scalafx.event.ActionEvent
 import scalafx.scene.Scene
 import scalafx.scene.control.{ComboBox, Label, Slider}
 import scalafx.scene.layout.{BorderPane, HBox, VBox}
@@ -30,6 +31,11 @@ object PollView {
       text.text = "Developers salaries - "
       val comboBox = new ComboBox[String](pollPeriods)
       comboBox.value = pollPeriods(0)
+      comboBox.onAction = (event: ActionEvent) => {
+        println(s"selected: ${comboBox.value.value}") //select vals in combobox
+        val pollPeriod = comboBox.value.value
+        presenter.selectPeriod(pollPeriod)
+      }
       val horizontalBox = new HBox()
       horizontalBox.children ++= List(text, comboBox)
 

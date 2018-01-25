@@ -2,7 +2,7 @@ package util
 
 import model.Poll
 
-class PollParser {
+object PollParser {
   var pollData = List[Poll]()
 
   def parseDataFile(file: java.io.File): List[Poll] = {
