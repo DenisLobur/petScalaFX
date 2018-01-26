@@ -3,10 +3,10 @@ package util
 import model.Poll
 
 object PollParser {
-  var pollData = List[Poll]()
 
   def parseDataFile(file: java.io.File): List[Poll] = {
     val start = System.currentTimeMillis()
+    var pollData = List[Poll]()
     val bufferedSource = io.Source.fromFile(file)
     for (line <- bufferedSource.getLines.drop(1)) {
       val poll = periodToDataParser(file.getName, line)
@@ -14,9 +14,8 @@ object PollParser {
     }
     bufferedSource.close
 
-    println(pollData)
     val stop = System.currentTimeMillis()
-    println(stop - start)
+    println(s"Parse time: ${stop - start}")
     pollData
   }
 

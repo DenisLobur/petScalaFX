@@ -32,19 +32,20 @@ class Presenter {
     exec(cities).foreach(println)
   }
 
-  selectCities()
+  //selectCities()
 
   def clearTable(): Unit = {
     val clearTable = pollRepository.table.delete
     exec(clearTable)
   }
 
-  def createTable(): Unit = {
+  def createTable(parsedData: List[Poll]): Unit = {
     exec(PollTable.table.schema.drop.asTry andThen PollTable.table.schema.create)
-    //exec(PollTable.table ++= parsedData)
+    exec(PollTable.table ++= parsedData)
   }
 
   def selectPeriod(period: String): Unit = {
+    clearTable()
     val fileToParse = period match {
       case December2011.show => December2011.name
       case May2011.show => May2011.name
@@ -63,6 +64,7 @@ class Presenter {
     }
 
     val parsedData: List[Poll] = PollParser.parseDataFile(new File(getClass.getResource(s"/$fileToParse").getPath))
-    exec(PollTable.table ++= parsedData)
+    println(s"dataset size: ${parsedData.size}")
+    createTable(parsedData)
   }
 }

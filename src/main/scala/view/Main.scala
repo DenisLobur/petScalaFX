@@ -32,6 +32,6 @@ object Main extends JFXApp {
 
   val presenter = new Presenter
   val view = PollView
-//  presenter.selectPeriod("May 2017")
+//  presenter.selectPeriod("May 2016")
 
 }

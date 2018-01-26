@@ -17,13 +17,13 @@ object DumbView {
       val create = new Button("create")
       create.onAction = (event: ActionEvent) => {
         System.out.println("click on create!")
-        presenter.createTable()
+        //presenter.createTable()
       }
 
       val clear = new Button("clear")
       clear.onAction = (event: ActionEvent) => {
         System.out.println("click on cancel!")
-        presenter.clearTable()
+        //presenter.clearTable()
       }
       val rootPane = new BorderPane
       rootPane.top = clear

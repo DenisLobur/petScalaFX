@@ -1,6 +1,7 @@
 package view
 
 
+import model.{City, Language, Position}
 import presenter.Presenter
 import util.PollPeriod
 import util.PollPeriod._
@@ -29,15 +30,15 @@ object PollView {
 
       val text = new Label
       text.text = "Developers salaries - "
-      val comboBox = new ComboBox[String](pollPeriods)
-      comboBox.value = pollPeriods(0)
-      comboBox.onAction = (event: ActionEvent) => {
-        println(s"selected: ${comboBox.value.value}") //select vals in combobox
-        val pollPeriod = comboBox.value.value
+      val periodDropDown = new ComboBox[String](pollPeriods)
+      periodDropDown.value = pollPeriods(0)
+      periodDropDown.onAction = (event: ActionEvent) => {
+        println(s"selected: ${periodDropDown.value.value}")
+        val pollPeriod = periodDropDown.value.value
         presenter.selectPeriod(pollPeriod)
       }
       val horizontalBox = new HBox()
-      horizontalBox.children ++= List(text, comboBox)
+      horizontalBox.children ++= List(text, periodDropDown)
 
 
       val slider = new Slider(0, 10, 0)
@@ -46,12 +47,12 @@ object PollView {
 
       val rootPane = new BorderPane
       rootPane.top = horizontalBox
-      val topCenter: VBox = center("city", Seq[String]("Kyiv", "Lviv"), "Kyiv")
-      val middleCenter: VBox = center("position", Seq[String]("Junior", "Middle", "Senior"), "Middle")
-      val bottomCenter: VBox = center("language", Seq[String]("Java", "Scala", "Python"), "Java")
+      val cityDropDown: VBox = center("city", City.cities, "Киев")
+      val middleCenter: VBox = center("position", Position.positions, "Software Engineer")
+      val bottomCenter: VBox = center("language", Language.languages, "Java")
       val exprslider = bottom()
       val leftCenter = new VBox(10)
-      leftCenter.children ++= List(topCenter, middleCenter, bottomCenter, exprslider)
+      leftCenter.children ++= List(cityDropDown, middleCenter, bottomCenter, exprslider)
 
       val rightCenter = new VBox(10)
       rightCenter.children ++= List(twoLabelWidget("I quarter", "1000$"), twoLabelWidget("Median", "3000$"), twoLabelWidget("III quarter", "5000$"))
