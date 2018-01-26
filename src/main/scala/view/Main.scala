@@ -1,6 +1,7 @@
 package view
 
 import presenter.Presenter
+import view.PollView.presenter
 
 import scalafx.application.JFXApp
 
@@ -31,5 +32,6 @@ object Main extends JFXApp {
 
   val presenter = new Presenter
   val view = PollView
+//  presenter.selectPeriod("May 2017")
 
 }

@@ -13,7 +13,7 @@ import scala.concurrent.duration.Duration
 
 class Presenter {
 
-  val parsedData: List[Poll] = PollParser.parseDataFile(new File(getClass.getResource("/2017may").getPath))
+//  val parsedData: List[Poll] = PollParser.parseDataFile(new File(getClass.getResource("/2017may").getPath))
 
   def exec[T](program: DBIO[T]): T = Await.result(db.run(program), Duration.Inf)
 
@@ -25,7 +25,7 @@ class Presenter {
 
   println(PollTable.table.schema.createStatements.mkString)
 
-  exec(PollTable.table ++= parsedData)
+//  exec(PollTable.table ++= parsedData)
 
   def selectCities(): Unit = {
     val cities = pollRepository.table.map(_.language).result
@@ -41,7 +41,7 @@ class Presenter {
 
   def createTable(): Unit = {
     exec(PollTable.table.schema.drop.asTry andThen PollTable.table.schema.create)
-    exec(PollTable.table ++= parsedData)
+    //exec(PollTable.table ++= parsedData)
   }
 
   def selectPeriod(period: String): Unit = {
@@ -62,8 +62,7 @@ class Presenter {
       case _ => throw new NoSuchElementException(s"Period $period is unknown")
     }
 
-    PollParser.parseDataFile(new File(getClass.getResource(s"/$fileToParse").getPath))
+    val parsedData: List[Poll] = PollParser.parseDataFile(new File(getClass.getResource(s"/$fileToParse").getPath))
+    exec(PollTable.table ++= parsedData)
   }
-
-
 }

@@ -1,4 +1,4 @@
-"Город","salary","Должность","exp","Язык.программирования"
+"N","Город","salary","Должность","exp","Язык.программирования"
 "1","Киев",300,"Junior QA engineer",0.75,""
 "2","Харьков",1700,"Senior Software Engineer",6,"PHP"
 "3","Киев",937.5,"Junior Software Engineer",0.75,"Java"

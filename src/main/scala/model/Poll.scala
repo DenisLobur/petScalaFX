@@ -3,12 +3,12 @@ package model
 import scala.concurrent.Future
 import slick.jdbc.PostgresProfile.api._
 
-case class Poll(id: String, city: String, salary: Int, position: String, experience: Double, language: String)
+case class Poll(id: String, city: String, salary: Double, position: String, experience: Double, language: String)
 
 class PollTable(tag: Tag) extends Table[Poll](tag, "poll") {
   val id = column[String]("id", O.PrimaryKey, O.AutoInc)
   val city = column[String]("city")
-  val salary = column[Int]("salary")
+  val salary = column[Double]("salary")
   val position = column[String]("position")
   val experience = column[Double]("experience")
   val language = column[String]("language")
