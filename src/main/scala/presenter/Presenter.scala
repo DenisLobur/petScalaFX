@@ -7,11 +7,13 @@ import slick.dbio.DBIO
 import slick.jdbc.PostgresProfile.api._
 import util.PollPeriod._
 import util.{PollParser, PollPeriod}
+import view.PollView
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
-class Presenter {
+class Presenter[GeneralView] {
+
   private var currentPeriod: String = PollPeriod.May2011.show
   private var currentCity: String = "вся Украина"
   private var currentPosition = "Junior Software Engineer"
@@ -90,6 +92,21 @@ class Presenter {
 
   def updatePoll(): Unit = {
     println(s"updated:\nperiod: $currentPeriod\ncity: $currentCity\nposition: $currentPosition\nlanguage: $currentLanguage")
-
+    val query = pollRepository.table.filter(raw => {
+      raw.language === currentLanguage && raw.position === currentPosition && raw.city === currentCity
+    }).size.result
+    val updatedValue = exec(query)
+    print(updatedValue)
+    PollView.updateView(updatedValue.toString)
+    val medianQuery = pollRepository.table
+      .filter(raw => {
+        raw.language === currentLanguage && raw.position === currentPosition && raw.city === currentCity
+      }).map(raw => raw.salary).result
+    println(medianQuery)
+    val updatedMedian = exec(medianQuery)
+    if (updatedMedian.nonEmpty) {
+      val newMedian = updatedMedian.sortWith(_ < _).drop(updatedMedian.size / 2).head
+      PollView.updateMedian(newMedian.toString)
+    }
   }
 }

@@ -9,7 +9,7 @@ import scalafx.scene.Scene
 import scalafx.scene.control.Button
 import scalafx.scene.layout.BorderPane
 
-object DumbView {
+object DumbView extends GeneralView {
   val presenter = new Presenter
   Main.stage = new application.JFXApp.PrimaryStage {
     title = "Test"
@@ -34,4 +34,6 @@ object DumbView {
 
 
   }
+
+  override def updateView(updatedValue: String): Unit = ???
 }

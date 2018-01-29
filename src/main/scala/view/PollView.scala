@@ -8,12 +8,13 @@ import scalafx.Includes._
 import scalafx.application
 import scalafx.event.ActionEvent
 import scalafx.scene.Scene
-import scalafx.scene.control.{ComboBox, Label, Slider}
+import scalafx.scene.control._
 import scalafx.scene.layout.{BorderPane, HBox, VBox}
 
-object PollView {
+object PollView extends GeneralView {
   private val presenter = new Presenter
   private val pollPeriods: Seq[String] = Periods.periods
+  val rightCenter = new VBox(10)
 
   Main.stage = new application.JFXApp.PrimaryStage {
     title = "salaries"
@@ -40,8 +41,12 @@ object PollView {
       val leftCenter = new VBox(10)
       leftCenter.children ++= List(cityDropDown, positionDropDown, languageDropDown, experienceSlider)
 
-      val rightCenter = new VBox(10)
-      rightCenter.children ++= List(twoLabelWidget("I quarter", "1000$"), twoLabelWidget("Median", "3000$"), twoLabelWidget("III quarter", "5000$"))
+
+      rightCenter.children ++= List(
+        twoLabelWidget("I quarter", "1000$"),
+        twoLabelWidget("Median", "3000$"),
+        twoLabelWidget("III quarter", "5000$"),
+        twoLabelWidget("Total respondents", "0"))
       val centerContent = new HBox
       centerContent.children ++= List(leftCenter, rightCenter)
       rootPane.center = centerContent
@@ -97,5 +102,11 @@ object PollView {
     vBox
   }
 
+  override def updateView(updatedValue: String): Unit = {
+    rightCenter.children(3) = twoLabelWidget("Total respondents", updatedValue)
+  }
 
+  def updateMedian(updatedValue: String): Unit = {
+    rightCenter.children(1) = twoLabelWidget("Median", updatedValue)
+  }
 }
