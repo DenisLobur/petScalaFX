@@ -12,8 +12,10 @@ import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
 class Presenter {
-
-//  val parsedData: List[Poll] = PollParser.parseDataFile(new File(getClass.getResource("/2017may").getPath))
+  private var currentPeriod: String = PollPeriod.May2011.show
+  private var currentCity: String = "вся Украина"
+  private var currentPosition = "Junior Software Engineer"
+  private var currentLanguage: String = "1C"
 
   def exec[T](program: DBIO[T]): T = Await.result(db.run(program), Duration.Inf)
 
@@ -25,14 +27,10 @@ class Presenter {
 
   println(PollTable.table.schema.createStatements.mkString)
 
-//  exec(PollTable.table ++= parsedData)
-
   def selectCities(): Unit = {
     val cities = pollRepository.table.map(_.language).result
     exec(cities).foreach(println)
   }
-
-  //selectCities()
 
   def clearTable(): Unit = {
     val clearTable = pollRepository.table.delete
@@ -44,7 +42,7 @@ class Presenter {
     exec(PollTable.table ++= parsedData)
   }
 
-  def selectPeriod(period: String): Unit = {
+  private def selectPeriod(period: String): Unit = {
     clearTable()
     val fileToParse = period match {
       case December2011.show => December2011.name
@@ -66,5 +64,32 @@ class Presenter {
     val parsedData: List[Poll] = PollParser.parseDataFile(new File(getClass.getResource(s"/$fileToParse").getPath))
     println(s"dataset size: ${parsedData.size}")
     createTable(parsedData)
+  }
+
+  def updatePeriod(pollPeriod: String): Unit = {
+    currentPeriod = pollPeriod
+    selectPeriod(pollPeriod)
+    updatePoll()
+  }
+
+  def updateCity(city: String): Unit = {
+    currentCity = city
+    updatePoll()
+  }
+
+  def updatePosition(position: String): Unit = {
+    currentPosition = position
+    updatePoll()
+  }
+
+  def updateLanguage(language: String): Unit = {
+    currentLanguage = language
+    updatePoll()
+  }
+
+
+  def updatePoll(): Unit = {
+    println(s"updated:\nperiod: $currentPeriod\ncity: $currentCity\nposition: $currentPosition\nlanguage: $currentLanguage")
+
   }
 }

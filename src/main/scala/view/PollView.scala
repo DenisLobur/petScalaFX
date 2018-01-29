@@ -1,10 +1,8 @@
 package view
 
 
-import model.{City, Language, Position}
+import model.{City, Language, Periods, Position}
 import presenter.Presenter
-import util.PollPeriod
-import util.PollPeriod._
 
 import scalafx.Includes._
 import scalafx.application
@@ -15,14 +13,7 @@ import scalafx.scene.layout.{BorderPane, HBox, VBox}
 
 object PollView {
   private val presenter = new Presenter
-  private val pollPeriods: Seq[String] = Seq(
-    December2011.show, May2011.show,
-    December2012.show, May2012.show,
-    December2013.show, May2013.show,
-    December2014.show, May2014.show,
-    December2015.show, May2015.show,
-    December2016.show, May2016.show,
-    May2017.show)
+  private val pollPeriods: Seq[String] = Periods.periods
 
   Main.stage = new application.JFXApp.PrimaryStage {
     title = "salaries"
@@ -31,28 +22,23 @@ object PollView {
       val text = new Label
       text.text = "Developers salaries - "
       val periodDropDown = new ComboBox[String](pollPeriods)
-      periodDropDown.value = pollPeriods(0)
+      periodDropDown.value = "Select Period"
       periodDropDown.onAction = (event: ActionEvent) => {
         println(s"selected: ${periodDropDown.value.value}")
         val pollPeriod = periodDropDown.value.value
-        presenter.selectPeriod(pollPeriod)
+        presenter.updatePeriod(pollPeriod)
       }
       val horizontalBox = new HBox()
       horizontalBox.children ++= List(text, periodDropDown)
 
-
-      val slider = new Slider(0, 10, 0)
-      //pane.orientation = Orientation.Horizontal
-      //pane.items ++= List(text, comboBox)
-
       val rootPane = new BorderPane
       rootPane.top = horizontalBox
-      val cityDropDown: VBox = center("city", City.cities, "Киев")
-      val middleCenter: VBox = center("position", Position.positions, "Software Engineer")
-      val bottomCenter: VBox = center("language", Language.languages, "Java")
-      val exprslider = bottom()
+      val cityDropDown: VBox = center("city", City.cities, "Select city")
+      val positionDropDown: VBox = center("position", Position.positions, "Select position")
+      val languageDropDown: VBox = center("language", Language.languages, "Select language")
+      val experienceSlider: VBox = bottom()
       val leftCenter = new VBox(10)
-      leftCenter.children ++= List(cityDropDown, middleCenter, bottomCenter, exprslider)
+      leftCenter.children ++= List(cityDropDown, positionDropDown, languageDropDown, experienceSlider)
 
       val rightCenter = new VBox(10)
       rightCenter.children ++= List(twoLabelWidget("I quarter", "1000$"), twoLabelWidget("Median", "3000$"), twoLabelWidget("III quarter", "5000$"))
@@ -71,6 +57,16 @@ object PollView {
 
     val comboBox = new ComboBox[String](content)
     comboBox.value = defaultValue
+    comboBox.onAction = (event: ActionEvent) => {
+      println(s"selected $label: ${comboBox.value.value}")
+      label match {
+        case "city" => presenter.updateCity(comboBox.value.value)
+
+        case "position" => presenter.updatePosition(comboBox.value.value)
+
+        case "language" => presenter.updateLanguage(comboBox.value.value)
+      }
+    }
 
     verticalBox.children ++= List(text, comboBox)
     verticalBox
