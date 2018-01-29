@@ -35,5 +35,11 @@ object DumbView extends GeneralView {
 
   }
 
-  override def updateView(updatedValue: String): Unit = ???
+  override def updateTotalRespondents(updatedValue: String): Unit = ???
+
+  override def updateMedian(median: String): Unit = ???
+
+  override def updateQ1(quartileOne: String): Unit = ???
+
+  override def updateQ3(quartileThree: String): Unit = ???
 }

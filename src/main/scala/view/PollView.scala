@@ -102,11 +102,19 @@ object PollView extends GeneralView {
     vBox
   }
 
-  override def updateView(updatedValue: String): Unit = {
+  override def updateTotalRespondents(updatedValue: String): Unit = {
     rightCenter.children(3) = twoLabelWidget("Total respondents", updatedValue)
   }
 
   def updateMedian(updatedValue: String): Unit = {
     rightCenter.children(1) = twoLabelWidget("Median", updatedValue)
+  }
+
+  override def updateQ1(quartileOne: String): Unit = {
+    rightCenter.children(0) = twoLabelWidget("I quarter", quartileOne)
+  }
+
+  override def updateQ3(quartileThree: String): Unit = {
+    rightCenter.children(2) = twoLabelWidget("III quarter", quartileThree)
   }
 }

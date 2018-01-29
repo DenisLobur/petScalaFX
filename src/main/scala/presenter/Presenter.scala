@@ -7,12 +7,12 @@ import slick.dbio.DBIO
 import slick.jdbc.PostgresProfile.api._
 import util.PollPeriod._
 import util.{PollParser, PollPeriod}
-import view.PollView
+import view.{GeneralView, PollView}
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
-class Presenter[GeneralView] {
+class Presenter {
 
   private var currentPeriod: String = PollPeriod.May2011.show
   private var currentCity: String = "вся Украина"
@@ -89,6 +89,8 @@ class Presenter[GeneralView] {
     updatePoll()
   }
 
+  val view: GeneralView = PollView
+
 
   def updatePoll(): Unit = {
     println(s"updated:\nperiod: $currentPeriod\ncity: $currentCity\nposition: $currentPosition\nlanguage: $currentLanguage")
@@ -96,17 +98,29 @@ class Presenter[GeneralView] {
       raw.language === currentLanguage && raw.position === currentPosition && raw.city === currentCity
     }).size.result
     val updatedValue = exec(query)
-    print(updatedValue)
-    PollView.updateView(updatedValue.toString)
-    val medianQuery = pollRepository.table
+    view.updateTotalRespondents(updatedValue.toString)
+
+    val allSalariesQuery = pollRepository.table
       .filter(raw => {
         raw.language === currentLanguage && raw.position === currentPosition && raw.city === currentCity
-      }).map(raw => raw.salary).result
-    println(medianQuery)
-    val updatedMedian = exec(medianQuery)
-    if (updatedMedian.nonEmpty) {
-      val newMedian = updatedMedian.sortWith(_ < _).drop(updatedMedian.size / 2).head
-      PollView.updateMedian(newMedian.toString)
+      })
+      .map(raw => raw.salary).result
+
+    val allSalariesVector = exec(allSalariesQuery)
+    if (allSalariesVector.nonEmpty) {
+      val allSalariesVectorSorted = allSalariesVector.sortWith(_ < _)
+      val median = allSalariesVectorSorted.drop(allSalariesVector.size / 2).head
+      view.updateMedian(s"$$ ${Math.round(median).toString}")
+
+      val q1 = allSalariesVectorSorted.take(allSalariesVectorSorted.size / 4).last
+      view.updateQ1(s"$$ ${Math.round(q1).toString}")
+
+      val q3 = allSalariesVectorSorted.drop(allSalariesVectorSorted.size / 2).drop(allSalariesVectorSorted.size / 4).head
+      view.updateQ3(s"$$ ${Math.round(q3).toString}")
+    } else {
+      view.updateMedian(s"$$ 0")
+      view.updateQ1(s"$$ 0")
+      view.updateQ3(s"$$ 0")
     }
   }
 }
