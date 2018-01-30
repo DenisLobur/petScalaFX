@@ -59,6 +59,7 @@ class Presenter {
       case May2015.show => May2015.name
       case December2016.show => December2016.name
       case May2016.show => May2016.name
+      case December2017.show => December2017.name
       case May2017.show => May2017.name
       case _ => throw new NoSuchElementException(s"Period $period is unknown")
     }

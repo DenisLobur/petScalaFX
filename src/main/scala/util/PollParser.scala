@@ -49,7 +49,7 @@ object PollParser {
       }
       case PollPeriod.December2012.name | PollPeriod.December2013.name | PollPeriod.May2013.name | PollPeriod.December2014.name
            | PollPeriod.May2014.name | PollPeriod.December2015.name | PollPeriod.May2015.name | PollPeriod.December2016.name
-           | PollPeriod.May2016.name | PollPeriod.May2017.name => {
+           | PollPeriod.May2016.name | PollPeriod.December2017.name | PollPeriod.May2017.name => {
         val id = list(0)
         val city = list(1)
         val salary = list(2).toDouble
