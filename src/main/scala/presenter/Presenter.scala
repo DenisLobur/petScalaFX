@@ -95,15 +95,32 @@ class Presenter {
 
   def updatePoll(): Unit = {
     println(s"updated:\nperiod: $currentPeriod\ncity: $currentCity\nposition: $currentPosition\nlanguage: $currentLanguage")
-    val query = pollRepository.table.filter(raw => {
-      raw.language === currentLanguage && raw.position === currentPosition && raw.city === currentCity
-    }).size.result
-    val updatedValue = exec(query)
-    view.updateTotalRespondents(updatedValue.toString)
+    currentCity match {
+      case "вся Украина" => {
+        val query = pollRepository.table.filter(raw => {
+          raw.language === currentLanguage && raw.position === currentPosition
+        }).size.result
+        val updatedValue = exec(query)
+        view.updateTotalRespondents(updatedValue.toString)
+      }
+      case "не Киев" => {
+        val query = pollRepository.table.filter(raw => {
+          raw.language === currentLanguage && raw.position === currentPosition && raw.city =!= "Киев"
+        }).size.result
+        val updatedValue = exec(query)
+        view.updateTotalRespondents(updatedValue.toString)
+      }
+      case a: String => {
+          val query = pollRepository.table.filter(raw => {
+            raw.language === currentLanguage && raw.position === currentPosition && raw.city === a}).size.result
+          val updatedValue = exec(query)
+          view.updateTotalRespondents(updatedValue.toString)
+        }
+    }
 
     val allSalariesQuery = pollRepository.table
       .filter(raw => {
-        raw.language === currentLanguage && raw.position === currentPosition && raw.city === currentCity
+        raw.language === currentLanguage && raw.position === currentPosition
       })
       .map(raw => raw.salary).result
 

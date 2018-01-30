@@ -18,7 +18,7 @@ object PollView extends GeneralView {
 
   Main.stage = new application.JFXApp.PrimaryStage {
     title = "salaries"
-    scene = new Scene(800, 600) {
+    scene = new Scene(450, 250) {
 
       val text = new Label
       text.text = "Developers salaries - "
