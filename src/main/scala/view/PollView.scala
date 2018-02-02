@@ -1,6 +1,9 @@
 package view
 
 
+import java.lang
+import javafx.beans.value.{ChangeListener, ObservableValue}
+
 import model.{City, Language, Periods, Position}
 import presenter.Presenter
 
@@ -18,7 +21,7 @@ object PollView extends GeneralView {
 
   Main.stage = new application.JFXApp.PrimaryStage {
     title = "salaries"
-    scene = new Scene(450, 250) {
+    scene = new Scene(500, 300) {
 
       val text = new Label
       text.text = "Developers salaries - "
@@ -81,9 +84,21 @@ object PollView extends GeneralView {
     val verticalBox = new VBox
 
     val text = new Label
-    text.text = "Experience"
+    text.text = "No experience"
 
     val slider = new Slider(0, 10, 0)
+    slider.setMajorTickUnit(1.0)
+    slider.setMinorTickCount(0)
+    slider.setShowTickLabels(true)
+    slider.setShowTickMarks(true)
+    slider.onMouseClicked.setValue(v => {
+      val currentPosition = Math.round(slider.value())
+      if (currentPosition == 0) {
+        text.text = "No experience"
+      } else {
+        text.text = s"Experience 0 to $currentPosition years"
+      }
+    })
 
     verticalBox.children ++= List(text, slider)
     verticalBox
