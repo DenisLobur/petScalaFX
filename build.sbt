@@ -1,6 +1,6 @@
 name := "fx"
 version := "0.1"
-scalaVersion := "2.12.4"
+scalaVersion := "2.12.2"
 
 libraryDependencies ++= List(
   "com.typesafe.slick" %% "slick" % "3.2.1",

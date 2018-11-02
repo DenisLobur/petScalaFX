@@ -47,13 +47,24 @@ object PollParser {
         val language = list(6)
         Poll(id, city, salary, position, experience, language)
       }
-      case PollPeriod.December2012.name | PollPeriod.December2013.name | PollPeriod.May2013.name | PollPeriod.December2014.name
-           | PollPeriod.May2014.name | PollPeriod.December2015.name | PollPeriod.May2015.name | PollPeriod.December2016.name
-           | PollPeriod.May2016.name | PollPeriod.December2017.name | PollPeriod.May2017.name => {
+      case PollPeriod.December2012.name | PollPeriod.December2013.name | PollPeriod.May2013.name
+           | PollPeriod.December2014.name | PollPeriod.May2014.name | PollPeriod.December2015.name
+           | PollPeriod.May2015.name | PollPeriod.December2016.name | PollPeriod.May2016.name
+           | PollPeriod.December2017.name | PollPeriod.May2017.name => {
         val id = list(0)
         val city = list(1)
         val salary = list(2).toDouble
         val position = list(4)
+        val experience = list(5).toDouble
+        val language = list(7)
+        Poll(id, city, salary, position, experience, language)
+      }
+      case PollPeriod.May2018.name => {
+        val id = list(0)
+        val city = list(1)
+        val salary = list(2).toDouble
+        val position = list(4)
+        val nums = "[0-9]".r
         val experience = list(5).toDouble
         val language = list(7)
         Poll(id, city, salary, position, experience, language)
